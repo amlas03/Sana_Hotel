@@ -1,0 +1,139 @@
+package sana_hotel.swing;
+import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class LoginPage extends JFrame {
+    JButton b1;
+    JButton b3;
+
+    public LoginPage() {
+        setTitle("Authentification");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(true);
+        setSize(500, 500);
+
+        ImageIcon imageIcon = new ImageIcon("C:\\INDIA & SD\\S1\\l.jpg");
+        this.setIconImage(imageIcon.getImage());
+
+        JLabel l1 = new JLabel("Username");
+        l1.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 18));
+        JTextField t1 = new JTextField();
+        t1.setPreferredSize(new Dimension(150, 50));
+        t1.setFont(new Font("Consolas", Font.PLAIN, 18));
+        t1.setText("username");
+        t1.setBorder(new RoundedBorder(15));
+
+        JLabel l2 = new JLabel("Password");
+        l2.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 18));
+        JTextField t2 = new JTextField();
+        t2.setPreferredSize(new Dimension(150, 50));
+        t2.setFont(new Font("Consolas", Font.PLAIN, 18));
+        t2.setText("********");
+        t2.setBorder(new RoundedBorder(15));
+
+        JPanel p1 = new JPanel();
+        p1.setPreferredSize(new Dimension(400, 100));
+        p1.add(l1);
+        p1.add(t1);
+        // Add an empty border to push p1 down
+        p1.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        JPanel p2 = new JPanel();
+        p2.setPreferredSize(new Dimension(400, 100));
+        p2.add(l2);
+        p2.add(t2);
+
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weighty = 0.8; // Give more weight to the top panel
+        mainPanel.add(p1, gbc);
+
+        gbc.gridy = (int) 0.5;
+        gbc.weighty = 0.2;
+        mainPanel.add(p2, gbc);
+
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        b1 = new JButton("S'authentifier");
+
+        b3 = new JButton("Quitter");
+
+        // Set button font
+        Font buttonFont = new Font("Arial Black", Font.PLAIN, 16);
+        b1.setFont(buttonFont);
+
+        b3.setFont(buttonFont);
+
+        // Set rounded borders for buttons
+        b1.setBorder(new RoundedBorder(15));
+
+        b3.setBorder(new RoundedBorder(15));
+
+        // Add mouse hover effect to buttons
+        addMouseHoverEffect(b1);
+
+        addMouseHoverEffect(b3);
+
+        p.add(b1);
+
+        p.add(b3);
+
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        add(mainPanel);
+        add(p);
+
+        setLocationRelativeTo(null); // Center the frame on the screen
+        setVisible(true);
+    }
+
+    private void addMouseHoverEffect(JButton button) {
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(button.getBackground().brighter());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(UIManager.getColor("control"));
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new LoginPage());
+    }
+
+    // Custom border class for rounded borders
+    private static class RoundedBorder extends AbstractBorder {
+        private final int radius;
+
+        public RoundedBorder(int radius) {
+            this.radius = radius;
+        }
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            super.paintBorder(c, g, x, y, width, height);
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(Color.BLACK);
+            g2d.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
+            g2d.dispose();
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c) {
+            return new Insets(radius, radius, radius, radius);
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c, Insets insets) {
+            insets.set(radius, radius, radius, radius);
+            return insets;
+        }
+    }
+}

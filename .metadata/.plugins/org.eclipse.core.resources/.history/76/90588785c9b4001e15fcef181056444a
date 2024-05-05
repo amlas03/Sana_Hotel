@@ -1,0 +1,6 @@
+package sana_hotel.swing.search;
+
+public class ChambreSearch {
+
+	public ChambreSearch() {}
+}

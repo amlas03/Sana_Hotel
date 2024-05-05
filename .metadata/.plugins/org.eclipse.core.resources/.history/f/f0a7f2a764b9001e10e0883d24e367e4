@@ -1,0 +1,153 @@
+package sana_hotel.swing.search;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import sana_hotel.beans.attributsSearch;
+import sana_hotel.database.Reservationdb;
+import sana_hotel.swing.BackgroundPanel;
+import sana_hotel.swing.RoundedButton;
+
+public class GeneralSearch extends JPanel implements ActionListener{
+	
+	protected JLabel id;
+	protected JButton b1, b2, search;
+	protected JTextField l;
+	protected BackgroundPanel b;
+	protected JLabel la;
+	protected JPanel p1;
+	
+	public GeneralSearch(attributsSearch a) {
+		 b=new BackgroundPanel("C:\\Nada\\sana_hotel\\sana_hotel\\sana_hotel\\gradient.jpg\\");
+		this.setSize(550,550);
+		this.add(b);
+		b1=new RoundedButton(a.searchElements(0));
+		b1.setPreferredSize(new Dimension(140,40));
+		b1.setBackground(new Color(176, 160, 197));
+		addMouseHoverEffect(b1);
+		b2=new RoundedButton(a.searchElements(1)); 
+		b2.setPreferredSize(new Dimension(160,40));
+		b2.setBackground(new Color(176, 160, 197));
+		addMouseHoverEffect(b2);
+		search=new RoundedButton("search");
+		search.setBackground(new Color(176, 160, 197));
+		addMouseHoverEffect(search);
+		
+		JPanel p=new JPanel();
+		p.add(b1);
+		p.add(b2); 
+		p.setOpaque(false);
+		p.setPreferredSize(new Dimension(50,5));
+		
+		p1=new JPanel();
+		p1.setLayout(new BorderLayout());
+		
+		p1.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.NORTH);
+		id=new JLabel("Veuillez entrer l'élément correspondant: ");
+		JPanel laa=new JPanel();
+		laa.setLayout(new FlowLayout(FlowLayout.CENTER));
+		laa.add(id);
+		laa.setOpaque(false);
+		//id.setBorder(new EmptyBorder(0,0,300,150));
+		//p.add(id);
+		p1.add(p, BorderLayout.CENTER);
+		p1.add(id, BorderLayout.NORTH);
+		//la=new JLabel("SALMA");
+		//p1.add(la); 
+		p1.setOpaque(false);
+		p1.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.SOUTH);
+		l=new JTextField(30);
+		JPanel p2=new JPanel();
+		p2.setLayout(new FlowLayout(FlowLayout.CENTER));
+		p2.add(l);
+		p2.add(search);
+		p2.setOpaque(false);
+		p1.add(p2, BorderLayout.CENTER);
+		
+		//p1.setBorder(new EmptyBorder(100, 100, 100, 100)); // Ajustez les valeurs de la bordure selon vos besoins
+
+		
+		b.setPreferredSize(getSize());
+		b.setLayout(new BoxLayout(b, BoxLayout.Y_AXIS));
+		
+		//la.setBorder(new EmptyBorder(-800,0,0,0));
+		//p1.add(la);
+		b.add(p1);
+		
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+		search.addActionListener(this);
+		search.setVisible(true);
+		l.setVisible(true);
+		setVisible(true);
+		
+	}
+	
+	private void addMouseHoverEffect(JButton button) {
+		// TODO Auto-generated method stub
+    	 // Stocker la couleur d'origine du bouton
+        Color originalColor = button.getBackground();
+
+        button.addMouseListener(new MouseAdapter() {
+            
+            public void mouseEntered(MouseEvent e) {
+                // Modifier la couleur au survol de la souris
+                button.setBackground(originalColor.brighter());
+            }
+
+            
+            public void mouseExited(MouseEvent e) {
+                // Restaurer la couleur d'origine lorsque la souris quitte le bouton
+                button.setBackground(originalColor);
+            }
+        });
+		
+	}
+	
+	public String getText() {
+		return l.getText();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==search) {
+			JOptionPane.showMessageDialog(null, "hi");
+			Reservationdb rd=new Reservationdb();
+			int i=Integer.parseInt(this.getText());
+			try {
+				la=new JLabel(rd.getReservationsByClientId(i));
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			p1.add(la);
+		}
+		
+		if(e.getSource()==b1) {
+			search=new RoundedButton("search : ID");
+			search.setPreferredSize(new Dimension(120,40));
+		}
+		b.revalidate();
+	    b.repaint();
+	}
+	
+}

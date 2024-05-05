@@ -1,0 +1,46 @@
+package sana_hotel.swing.search;
+
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.JPanel;
+
+import sana_hotel.beans.Chambre;
+import sana_hotel.database.Chambredb;
+
+public class ChambreSearch extends GeneralSearch implements ActionListener {
+
+	public ChambreSearch(Chambre a) {
+	    super(a);  // Call the superclass constructor first
+	    b1.setVisible(false);
+	    b2.setVisible(false);
+	    p1.remove(0);
+	    search.setPreferredSize(new Dimension(110,50));
+	    search.setText("Search_Num");
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {	
+		if(e.getSource()==search) {
+			Chambredb c = new Chambredb();
+			Chambre ch=new Chambre();
+			try {
+				ch=c.searchByChambreNumero(Integer.parseInt(this.getText()));
+			}
+			catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+				e1.printStackTrace();
+		}
+			la.setText(ch.toString());
+			p1.add(la);
+		}
+			
+	}
+	
+}

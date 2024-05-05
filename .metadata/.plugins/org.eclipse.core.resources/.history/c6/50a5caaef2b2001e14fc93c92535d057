@@ -1,0 +1,67 @@
+package sana_hotel.swing;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
+import sana_hotel.beans.Client;
+
+public class ClientForms extends JPanel{
+	
+	private List<LabeledTextField> ltf=new ArrayList<>();
+	private Buttons b;
+	
+	
+	public ClientForms(Client c) {
+		JPanel label=new JPanel();
+		//label.setOpaque(false);
+		JLabel ID=new JLabel("ID ");
+		ID.setFont(new Font("Century SchoolBook",Font.BOLD,13));
+		ID.setForeground(new Color(255, 255, 0));
+		ID.setBorder(new EmptyBorder(0,0,0,70));
+		//ID.setOpaque(false);
+		label.add(ID);
+		label.add(new JLabel(c.getId()+""));
+		setSize(500, 500);
+		BackgroundPanel ba=new BackgroundPanel("C:\\INDIA & SD\\sana_hotel\\sana_hotel\\sana_hotel\\bc_h.jpg");
+		this.add(ba);
+		JPanel p=new JPanel();
+		p.setOpaque(false);
+		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+		p.add(label);
+		for(int i=0; i<c.getNum(); i++) {
+			LabeledTextField l=new LabeledTextField(c.getLabel(i), c.getCol(i), 150);
+			ltf.add(l);
+			p.add(l);
+		}
+		JPanel pp=new JPanel();
+		pp.setOpaque(false);
+		pp.setLayout(new BorderLayout());
+		pp.add(p,BorderLayout.CENTER);
+		Buttons bo=new Buttons(new String[]{"Save","Reset","Exit"});
+		pp.add(bo,BorderLayout.SOUTH);
+		for(int i=0; i<3; i++) {
+			bo.addMouseHoverEffect(bo.getButton(i));
+			bo.addMousePressEffect(bo.getButton(i));
+		}
+		ba.add(pp);
+		ba.setPreferredSize(getSize());
+		label.setVisible(true);
+	}
+	
+	
+}

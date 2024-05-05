@@ -1,0 +1,133 @@
+package sana_hotel.swing;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+public class MainFrame2 extends JFrame {
+
+    public MainFrame2() {
+        this.setTitle("Welcome");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(true);
+        this.setSize(500, 500);
+
+        // Create a custom JPanel with the background image
+        BackgroundPanel backgroundPanel = new BackgroundPanel("C:\\INDIA & SD\\S1\\bc_h.jpg");
+
+        // Set layout manager of the content pane to BorderLayout
+        this.setLayout(new BorderLayout());
+
+        // Add the background panel to the CENTER position
+        this.add(backgroundPanel);
+
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\alaou\\Pictures\\dew.jpeg");
+        this.setIconImage(imageIcon.getImage());
+
+        // Create a JPanel for buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,45,150)); // Use FlowLayout with center alignment
+        JPanel buttonPanel1=new JPanel();
+        buttonPanel1.setLayout(new BoxLayout(buttonPanel1,BoxLayout.Y_AXIS));
+        JButton b1 = new RoundedButton("client");
+        JButton b2 = new RoundedButton("chambre");
+        JButton b3 = new RoundedButton("reservation");
+       /* b1.setBorder(new Border(20,20,20,20));
+        b2.setBorder(new Border(20,20,20,20));
+        b3.setBorder(new Border(20,20,20,20));*/
+        b1.setBackground(new Color(150,50,90));
+        b2.setBackground(new Color(150,50,90));
+        b3.setBackground(new Color(150,50,90));
+        JPanel ep=new JPanel();
+        ep.setSize(100, 20);
+        ep.setBackground(new Color(220,80,102));
+        ep.setVisible(true);
+        JPanel ep1=new JPanel();
+        ep1.setSize(100, 20);
+        ep1.setBackground(new Color(220,80,102));
+        ep1.setVisible(true);
+        JPanel ep2=new JPanel();
+        ep2.setSize(100, 20);
+        ep2.setBackground(new Color(220,80,102));
+        ep2.setVisible(true);
+        buttonPanel1.add(ep2);
+        buttonPanel1.add(b1);
+        buttonPanel1.add(ep1);
+        buttonPanel1.add(b2);
+        buttonPanel1.add(ep);
+        buttonPanel1.add(b3);
+        buttonPanel1.setOpaque(false);
+        buttonPanel.setBackground(new Color(220, 80, 102));
+        buttonPanel.add(buttonPanel1);
+        
+        addMouseHoverEffect(b1);
+        addMouseHoverEffect(b2);
+        addMouseHoverEffect(b3);
+        
+
+        // Add the buttonPanel to the WEST position with BorderLayout
+        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(buttonPanel, BorderLayout.WEST);
+
+        this.setVisible(true);
+    }
+
+    private void addMouseHoverEffect(JButton button) {
+		// TODO Auto-generated method stub
+    	 // Stocker la couleur d'origine du bouton
+        Color originalColor = button.getBackground();
+
+        button.addMouseListener(new MouseAdapter() {
+            
+            public void mouseEntered(MouseEvent e) {
+                // Modifier la couleur au survol de la souris
+                button.setBackground(originalColor.brighter());
+            }
+
+            
+            public void mouseExited(MouseEvent e) {
+                // Restaurer la couleur d'origine lorsque la souris quitte le bouton
+                button.setBackground(originalColor);
+            }
+        });
+		
+	}
+
+	// Custom JPanel class to paint the background image
+    class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel(String imagePath) {
+            try {
+                backgroundImage = ImageIO.read(new File(imagePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }}
+
+
+    public static void main(String[] args) {
+        new MainFrame2();
+    }
+}

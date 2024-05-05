@@ -1,0 +1,215 @@
+package sana_hotel.swing;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import sana_hotel.beans.Chambre;
+import sana_hotel.beans.Client;
+import sana_hotel.beans.Reservation;
+
+public class MainFrame extends JFrame  implements ActionListener{
+	RoundedButton b1,b2,b3; JButton b;
+	JPanel p;
+	BackgroundPanel backgroundPanel;
+    public MainFrame() {
+        this.setTitle("Welcome");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(true);
+        this.setSize(700, 500);
+        this.setLocationRelativeTo(null);
+
+        
+        backgroundPanel = new BackgroundPanel("C:\\INDIA & SD\\S1\\sana_hotel\\sana_hotel\\src\\p-w.avif\\");
+        //BackgroundPanel purple = new BackgroundPanel("purple.jpg");
+
+        
+        this.setLayout(new BorderLayout());
+
+        
+        this.add(backgroundPanel);
+
+        ImageIcon imageIcon = new ImageIcon("C:\\INDIA & SD\\S1\\sana_hotel\\sana_hotel\\src\\bc_h.jpg\\");
+        this.setIconImage(imageIcon.getImage());
+
+        // Create a JPanel for buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,45,100)); // Use FlowLayout with center alignment
+        JPanel buttonPanel1=new JPanel();
+        buttonPanel1.setLayout(new BoxLayout(buttonPanel1,BoxLayout.Y_AXIS));
+        b1 = new RoundedButton("    client     ");
+        b2 = new RoundedButton("  chambre  ");
+        b3 = new RoundedButton("reservation");
+        
+        b1.setBackground(new Color(0xAF1281));
+        b2.setBackground(new Color(0xAF1281));
+        b3.setBackground(new Color(0xAF1281));
+        
+      /*  Dimension commonSize = new Dimension(100, 40);
+        b1.setPreferredSize(commonSize);
+        b2.setPreferredSize(commonSize);
+        b3.setPreferredSize(commonSize);*/
+        
+       /* b1.setBorder(new Border(20,20,20,20));
+        b2.setBorder(new Border(20,20,20,20));
+        b3.setBorder(new Border(20,20,20,20));*/
+        
+        JPanel ep=new JPanel();
+        ep.setBorder(new EmptyBorder(0,0,10,0));
+        ep.setBackground(new Color(0xF95480));
+        ep.setVisible(true);
+        JPanel ep1=new JPanel();
+        ep1.setBorder(new EmptyBorder(0,0,10,0));
+        ep1.setBackground(new Color(0xF95480));
+        ep1.setVisible(true);
+        JPanel ep2=new JPanel();
+        ep2.setBorder(new EmptyBorder(0,0,10,0));
+        ep2.setBackground(new Color(0xF95480));
+        ep2.setVisible(true);
+        buttonPanel1.add(ep2);
+        buttonPanel1.add(b1);
+        buttonPanel1.add(ep1);
+        buttonPanel1.add(b2);
+        buttonPanel1.add(ep);
+        buttonPanel1.add(b3);
+        buttonPanel1.setOpaque(false);
+        buttonPanel.setBackground(new Color(0xF95480));
+        buttonPanel.add(buttonPanel1);
+        
+        addMouseHoverEffect(b1);
+        addMouseHoverEffect(b2);
+        addMouseHoverEffect(b3);
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
+        
+        JPanel back=new JPanel();
+        back.setLayout(new FlowLayout(FlowLayout.LEFT));
+        b=new JButton("Back");
+        b.addActionListener(this);
+        b.setFocusable(false);
+        b.setBackground(new Color(0xAF1281));
+       // b.setForeground(new Color(215, 80, 102));
+        back.add(b);
+        back.setBackground(new Color(0xF95480));
+
+        
+        p=new JPanel();
+        p.setLayout(new BorderLayout());
+        p.add(buttonPanel,BorderLayout.CENTER);
+        p.add(back,BorderLayout.NORTH);
+        back.setBackground(new Color(0xF95480));
+        
+
+        // Add the buttonPanel to the WEST position with BorderLayout
+      //  this.add(purple,BorderLayout.NORTH);
+        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(p, BorderLayout.WEST);
+
+        this.setVisible(true);
+        //this.pack();
+    }
+
+    private void addMouseHoverEffect(JButton button) {
+		// TODO Auto-generated method stub
+    	 // Stocker la couleur d'origine du bouton
+        Color originalColor = button.getBackground();
+
+        button.addMouseListener(new MouseAdapter() {
+            
+            public void mouseEntered(MouseEvent e) {
+                // Modifier la couleur au survol de la souris
+                button.setBackground(originalColor.brighter());
+            }
+
+            
+            public void mouseExited(MouseEvent e) {
+                // Restaurer la couleur d'origine lorsque la souris quitte le bouton
+                button.setBackground(originalColor);
+            }
+        });
+		
+	}
+
+	// Custom JPanel class to paint the background image
+    class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel(String imagePath) {
+            try {
+                backgroundImage = ImageIO.read(new File(imagePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }}
+
+
+    public static void main(String[] args) {
+        new MainFrame();
+    }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		backgroundPanel.removeAll();
+		backgroundPanel.add(p, BorderLayout.WEST);
+		if(e.getSource()==b1) {
+			setTitle("Client Search");
+			ImageIcon imageC = new ImageIcon("C:\\INDIA & SD\\S1\\sana_hotel\\sana_hotel\\src\\client.jpg\\");
+	        this.setIconImage(imageC.getImage());
+			ClientSearch cs=new ClientSearch();
+			backgroundPanel.add(cs, BorderLayout.CENTER);
+			
+		}
+		if(e.getSource()==b2) {
+			setTitle("Chambre Search");
+			ImageIcon imageC = new ImageIcon("room.png");
+	        this.setIconImage(imageC.getImage());
+			ChambreForms cf=new ChambreForms(new Chambre());
+			backgroundPanel.add(cf, BorderLayout.CENTER);
+			
+		}
+		if(e.getSource()==b3) {
+			setTitle("Reservation Search");
+			ImageIcon imageR = new ImageIcon("reser.png");
+	        this.setIconImage(imageR.getImage());
+			ReservationForms rf=new ReservationForms(new Reservation());
+			backgroundPanel.add(rf, BorderLayout.CENTER);
+			
+		}
+		if(e.getSource()==b) {
+			new WelcomeFrame();
+			this.dispose();
+		}
+		backgroundPanel.revalidate();
+	    backgroundPanel.repaint();
+	}
+}
+
+
+

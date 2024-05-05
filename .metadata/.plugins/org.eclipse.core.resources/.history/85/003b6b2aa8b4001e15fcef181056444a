@@ -1,0 +1,115 @@
+package sana_hotel.beans;
+
+public class Client implements AttributeGetter {
+
+	private static int id=0;
+	private String nom;
+	private String ville;
+	private String pays;
+	private String prenom;
+	private String age;
+	private String numtel;
+	
+	public Client(){
+		
+	}
+
+	public Client(String n,String pr,String a, String v, String p, String num) {
+		id++;
+		nom=n;
+		ville=v;
+		pays=p;
+		prenom =pr;
+		age=a;
+		numtel=num;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getNumtel() {
+		return numtel;
+	}
+
+	public void setNumtel(String numtel) {
+		this.numtel = numtel;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getVille() {
+		return ville;
+	}
+
+	public void setVille(String ville) {
+		this.ville = ville;
+	}
+
+	public String getPays() {
+		return pays;
+	}
+
+	public void setPays(String pays) {
+		this.pays = pays;
+	}
+
+	public int getId() {
+		return id;
+	}
+	
+	@Override
+	public String toString() {
+		return "Client [nom=" + nom + ", ville=" + ville + ", pays=" + pays + ", prenom=" + prenom + ", age=" + age
+				+ ", numtel=" + numtel + "]";
+	}
+
+	public int getNum() {
+	    return 6;
+	}
+
+
+	public String getLabel(int index) {
+		switch(index) {
+		case(0): return "Nom du client";
+		case(1): return "Prénom du client";
+		case(2): return "Age";
+		case(3): return "ville";
+		case(4): return "pays";
+		case(5): return "Numéro de téléphone";
+		}
+		return null;
+	}
+
+	public int getCol(int index) {
+		switch(index) {
+		case(0): return 15;
+		case(1): return 15;
+		case(2): return 10;
+		case(3): return 10;
+		case(4): return 15;
+		case(5): return 30;
+		}
+		return 0;
+	}
+	
+
+}

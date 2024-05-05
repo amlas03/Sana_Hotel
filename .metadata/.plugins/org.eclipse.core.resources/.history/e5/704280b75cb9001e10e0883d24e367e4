@@ -1,0 +1,67 @@
+package sana_hotel.database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+import sana_hotel.beans.Chambre;
+
+public class Chambredb {
+
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/sana_hotel";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "1234";
+
+    public Chambredb() {
+    }
+
+    public void write(List<String> values) throws SQLException, ClassNotFoundException {
+        String sql = "INSERT INTO chambres (numero, type, state, prix) VALUES (?, ?, ?, ?)";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                for (int i = 0; i < values.size(); i++) {
+                    preparedStatement.setString(i + 1, values.get(i));
+                }
+
+                preparedStatement.executeUpdate();
+                System.out.println("Chambre ajoutée avec succès !");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            
+        }
+    }
+    public Chambre searchByChambreNumero(int numero) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM chambres WHERE numero = ?";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, numero);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int chambreType = resultSet.getInt("type");
+                        int state = resultSet.getInt("state");
+                        double prix = resultSet.getDouble("prix");
+
+                        return new Chambre(numero, chambreType, state, prix);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+}
+

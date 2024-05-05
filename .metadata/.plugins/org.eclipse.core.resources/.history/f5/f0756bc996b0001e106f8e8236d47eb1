@@ -1,0 +1,62 @@
+package sana_hotel.swing;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class LoginFrame extends JFrame {
+
+    public LoginFrame() {
+        this.setTitle("S'authentifier");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(true);
+        this.setSize(500, 500);
+
+        ImageIcon imageIcon = new ImageIcon("C:\\INDIA & SD\\S1\\l.jpg");
+        this.setIconImage(imageIcon.getImage());
+
+        JLabel l1 = new JLabel("Username");
+        l1.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 18));
+        JTextField t1 = new JTextField();
+        t1.setPreferredSize(new Dimension(200, 40));
+        t1.setFont(new Font("Consolas", Font.PLAIN, 18));
+        t1.setText("username");
+
+        JLabel l2 = new JLabel("Password");
+        l2.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 18));
+        JTextField t2 = new JTextField();
+        t2.setPreferredSize(new Dimension(200, 40));
+        t2.setFont(new Font("Consolas", Font.PLAIN, 18));
+        t2.setText("password");
+
+        JPanel p1 = new JPanel();
+        p1.setLayout(new BoxLayout(p1, BoxLayout.X_AXIS));
+        p1.add(l1);
+        p1.add(t1);
+
+        JPanel p2 = new JPanel();
+        p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
+        p2.add(l2);
+        p2.add(t2);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.add(p1);
+        mainPanel.add(p2);
+
+        this.add(mainPanel);
+        //this.add(new JButton("S'authentifier"));
+        this.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new LoginFrame();
+    }
+}

@@ -1,0 +1,107 @@
+package Database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import sana_hotel.beans.Client;
+import sana_hotel.swing.LabeledTextField;
+
+public class Clientdb {
+	private static final String JDBC_URL = "jdbc:mysql://localhost:3306/sana_hotel";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "1234";
+	
+	public Clientdb() {
+		
+	}
+	
+	public void write(List<String> s) throws SQLException, ClassNotFoundException{
+		String sql = "INSERT INTO clients (nom,prenom,age, ville, pays, numtel) VALUES (?, ?, ?,?,?,?)";
+		try {
+            // Étape 1 : Charger le pilote JDBC
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Étape 2 : Établir la connexion à la base de données
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            
+            PreparedStatement preparedStatement = connection.prepareStatement(sql); {
+
+                preparedStatement.setString(1, s.get(0));
+                preparedStatement.setString(2, s.get(1));
+                preparedStatement.setString(3, s.get(2));
+                preparedStatement.setString(4, s.get(3));
+                preparedStatement.setString(5, s.get(4));
+                preparedStatement.setString(6, s.get(5));
+
+                preparedStatement.executeUpdate();
+
+                System.out.println("Utilisateur ajouté avec succès !");
+            }
+
+	}catch(SQLException e) {
+		e.printStackTrace();
+	}
+}
+	
+	public String getID() throws SQLException, ClassNotFoundException {
+		try {
+            // Étape 1 : Charger le pilote JDBC
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Étape 2 : Établir la connexion à la base de données
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            // Étape 3 : Créer une déclaration (Statement) pour exécuter des requêtes SQL
+            Statement statement = connection.createStatement();
+
+            // Exemple de requête SELECT
+            String selectQuery = "SELECT max(id) FROM clients";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+            
+            if(resultSet.next()) {
+            int id=resultSet.getInt("max(id)");
+            return (id+1)+"";
+            }
+            
+	}catch(SQLException e) {
+		e.printStackTrace();
+	}
+		return null;
+}
+
+/*public List<Client> search(String nom) throws SQLException {
+	List<Client> clients = new ArrayList<>();
+	String query = "SELECT * FROM client WHERE nom LIKE  ?";
+    try {
+    	// Étape 1 : Charger le pilote JDBC
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        // Étape 2 : Établir la connexion à la base de données
+        Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+        PreparedStatement preparedStatement = connection.prepareStatement(query){
+        
+    
+        preparedStatement.setString(1,"%"+ nom+"%");
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                	int id =resultSet.getInt("id");
+                    String name = resultSet.getString("nom");
+                    String pays = resultSet.getString("pays");
+                    String ville = resultSet.getString("ville");
+
+                    Client client = new Client();
+                    clients.add(client);
+                }
+            }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return clients;}*/}	

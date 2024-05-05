@@ -1,0 +1,12 @@
+package cf_prep;
+
+public class MainTest {
+	public static void main(String args[]) {
+		
+	
+	MyFrame myFrame = new MyFrame();
+	//Mylabel myLabel = new Mylabel();
+	//new MyButton();
+	//new MyTextField();
+	}
+}

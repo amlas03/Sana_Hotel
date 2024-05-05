@@ -1,0 +1,83 @@
+package sana_hotel.database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Date;
+
+import sana_hotel.beans.Chambre;
+import sana_hotel.beans.Client;
+import sana_hotel.beans.Reservation;
+
+public class Reservationdb {
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/sana_hotel";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "1234";
+
+    public Reservationdb() {
+    }
+
+    public void addReservation(Reservation reservation) throws SQLException, ClassNotFoundException {
+        String reservationSql = "INSERT INTO reservations (client_id, chambre_numero, date, nbre_jours) VALUES (?, ?, ?, ?)";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(reservationSql)) {
+                preparedStatement.setInt(1, reservation.getClient().getId()); // Assuming Client has an ID
+                preparedStatement.setInt(2, reservation.getChambre().getNumero());
+                preparedStatement.setDate(3, new java.sql.Date(reservation.getDate().getTime()));
+                preparedStatement.setInt(4, reservation.getNbreJours());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+    }
+
+    public void occupyRoom(Chambre chambre) throws SQLException, ClassNotFoundException {
+        // Check if the room is reserved before occupying
+        if (isRoomReserved(chambre)) {
+            String occupySql = "UPDATE chambres SET state = 1 WHERE numero = ?";
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+                try (PreparedStatement preparedStatement = connection.prepareStatement(occupySql)) {
+                    preparedStatement.setInt(1, chambre.getNumero());
+
+                    preparedStatement.executeUpdate();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exception
+            }
+        } else {
+            System.out.println("Error: Room is not reserved.");
+        }
+    }
+
+    private boolean isRoomReserved(Chambre chambre) throws SQLException, ClassNotFoundException {
+        String checkReservationSql = "SELECT * FROM reservations WHERE chambre_numero = ? AND date <= ? AND date + INTERVAL nbre_jours DAY > ?";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(checkReservationSql)) {
+                preparedStatement.setInt(1, chambre.getNumero());
+                preparedStatement.setDate(2, new java.sql.Date(new Date().getTime()));
+                preparedStatement.setDate(3, new java.sql.Date(new Date().getTime()));
+
+                return preparedStatement.executeQuery().next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            
+        }
+
+        return false;
+    }
+}

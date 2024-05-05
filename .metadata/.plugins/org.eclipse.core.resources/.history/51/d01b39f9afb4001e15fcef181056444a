@@ -1,0 +1,116 @@
+package sana_hotel.swing;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import sana_hotel.beans.Client;
+import sana_hotel.database.Clientdb;
+
+public class ClientSearch extends JPanel implements ActionListener{
+	RoundedButton b1,b2;
+	BackgroundPanel b;
+	RoundedButton search;
+	JTextField t;
+	public ClientSearch() {
+		b = new BackgroundPanel("C:\\INDIA & SD\\S1\\sana_hotel\\sana_hotel\\src\\p_p.jpeg\\");
+		b.setLayout(new BoxLayout(b, BoxLayout.Y_AXIS));
+		JLabel l=new JLabel("Rechercher par");
+		l.setForeground(Color.white);
+		l.setFont(new Font("ARIAL BLACK", Font.CENTER_BASELINE,18));
+		l.setOpaque(false);
+		b.add(l);
+		b1= new RoundedButton("ID");
+		b2=new RoundedButton("Nom du client");
+		JPanel p=new JPanel();
+		p.setLayout(new FlowLayout(FlowLayout.CENTER));
+		p.add(b1);
+		p.add(b2);
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+		p.setOpaque(false);
+		b.add(p);
+		add(b);
+		setVisible(true);
+		
+	}
+	public void SearchBar(){	
+			b.setLayout(new FlowLayout());
+			t=new JTextField();
+			search=new RoundedButton("Rechercher");
+			search.addActionListener(this);
+			JPanel p=new JPanel();
+			p.setLayout(new FlowLayout(FlowLayout.CENTER));
+			p.add(t);
+			p.add(search);
+			p.setOpaque(false);
+			b.add(p);
+			add(b);
+			setVisible(true);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		b.removeAll();
+		// TODO Auto-generated method stub
+		if((e.getSource())==b1){
+			SearchBar();
+			String info = t.getText();
+			Clientdb cd = new Clientdb();
+			Client c;
+			String s;
+			JLabel lc;
+		
+			try {
+				c= cd.searchById(Integer.parseInt(info));
+				s= c.toString();
+				lc= new JLabel(s);
+				b.add(lc);
+				
+			} catch (NumberFormatException | ClassNotFoundException | SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+		}
+		if((e.getSource())==b2){
+			SearchBar();
+			String info = t.getText();
+			Clientdb cd = new Clientdb();
+			List<Client> c;
+			String s;
+			List<JLabel> lc;
+		
+			try {
+				c= cd.searchByName(info);
+				for(int i=0; i<c.size();i++) {
+					s=c.get(i).toString();
+					b.setLayout(new BoxLayout(b,BoxLayout.Y_AXIS));
+					b.add(new JLabel(s));
+					
+				}
+				
+			} catch (NumberFormatException | ClassNotFoundException | SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			b.revalidate();
+			b.repaint();
+	}}
+	public static void main(String args[]) {
+		new ClientSearch();
+	}
+	}
+
+

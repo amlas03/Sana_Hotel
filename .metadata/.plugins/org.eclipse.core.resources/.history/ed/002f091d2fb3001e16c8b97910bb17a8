@@ -1,0 +1,56 @@
+package sana_hotel.swing;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
+import sana_hotel.beans.Chambre;
+
+public class ChambreForms extends JPanel{
+	
+	private List<LabeledTextField> ltf=new ArrayList<>();
+	private Buttons b;
+	
+	
+	public ChambreForms(Chambre c) {
+		setSize(500, 500);
+		BackgroundPanel ba=new BackgroundPanel("C:\\INDIA & SD\\sana_hotel\\sana_hotel\\sana_hotel\\bc_h.jpg");
+		this.add(ba);
+		JPanel p=new JPanel();
+		p.setOpaque(false);
+		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+		for(int i=0; i<c.getNum(); i++) {
+			LabeledTextField l=new LabeledTextField(c.getLabel(i), c.getCol(i), 155);
+			ltf.add(l);
+			p.add(l);
+		}
+		JPanel pp=new JPanel();
+		pp.setOpaque(false);
+		pp.setLayout(new BorderLayout());
+		pp.add(p,BorderLayout.CENTER);
+		Buttons bo=new Buttons(new String[]{"Save","Reset","Exit"});
+		pp.add(bo,BorderLayout.SOUTH);
+		for(int i=0; i<3; i++) {
+			bo.addMouseHoverEffect(bo.getButton(i));
+			bo.addMousePressEffect(bo.getButton(i));
+		}
+		ba.add(pp);
+		ba.setPreferredSize(getSize());
+	}
+	
+	
+}

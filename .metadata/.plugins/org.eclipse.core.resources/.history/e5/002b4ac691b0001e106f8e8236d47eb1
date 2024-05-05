@@ -1,0 +1,34 @@
+package sana_hotel.swing;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import sana_hotel.swing.MainFrame.BackgroundPanel;
+
+public class LoginFrame extends JFrame {
+	public LoginFrame() {
+		this.setTitle("Welcome");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(true);
+        this.setSize(500, 500);
+
+       
+
+        ImageIcon imageIcon = new ImageIcon("l.jpg");
+        this.setIconImage(imageIcon.getImage());
+
+        JLabel l1 =new JLabel("Username");
+        l1.setFont(new Font());
+
+        this.setVisible(true);
+
+	}
+
+}

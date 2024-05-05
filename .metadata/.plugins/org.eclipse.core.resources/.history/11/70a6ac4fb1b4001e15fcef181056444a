@@ -1,0 +1,114 @@
+package sana_hotel.swing;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import sana_hotel.beans.Client;
+import sana_hotel.database.Clientdb;
+
+public class ClientSearch extends JFrame implements ActionListener {
+    RoundedButton b1, b2;
+    BackgroundPanel b;
+    RoundedButton search;
+    JTextField t;
+
+    public ClientSearch() {
+        b = new BackgroundPanel("C:\\INDIA & SD\\S1\\sana_hotel\\sana_hotel\\src\\p_p.jpeg\\");
+        b.setLayout(new BoxLayout(b, BoxLayout.Y_AXIS));
+        
+        JLabel l = new JLabel("Rechercher par");
+        l.setForeground(Color.white);
+        l.setFont(new Font("ARIAL BLACK", Font.CENTER_BASELINE, 18));
+        l.setOpaque(false);
+        b.add(l);
+
+        b1 = new RoundedButton("ID");
+        b2 = new RoundedButton("Nom du client");
+        
+        JPanel p = new JPanel();
+        p.setLayout(new FlowLayout(FlowLayout.CENTER));
+        p.add(b1);
+        p.add(b2);
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        p.setOpaque(false);
+        b.add(p);
+
+        // Initialize the search bar components
+        t = new JTextField(50);
+        search = new RoundedButton("Rechercher");
+        search.addActionListener(this);
+
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        searchPanel.add(t);
+        searchPanel.add(search);
+        searchPanel.setOpaque(false);
+        searchPanel.setVisible(false);
+        b.add(searchPanel);
+        b.setSize(500,500);
+        add(b);
+        setContentPane(b);
+        pack();
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Clear existing components
+        //b.removeAll();
+
+        // Initialize the search bar components
+        t.setVisible(true);
+        search.setVisible(true);
+
+        if (e.getSource() == b1 || e.getSource() == b2) {
+            String info = t.getText();
+            Clientdb cd = new Clientdb();
+
+            try {
+                if (e.getSource() == b1) {
+                    // Search by ID
+                    Client c = cd.searchById(Integer.parseInt(info));
+                    if (c != null) {
+                        String s = c.toString();
+                        JLabel lc = new JLabel(s);
+                        b.add(lc);
+                    }
+                } else if (e.getSource() == b2) {
+                    // Search by Name
+                    List<Client> clients = cd.searchByName(info);
+                    for (Client client : clients) {
+                        String s = client.toString();
+                        JLabel lc = new JLabel(s);
+                        b.add(lc);
+                    }
+                }
+
+            } catch (NumberFormatException | ClassNotFoundException | SQLException e1) {
+                e1.printStackTrace();
+            }
+
+            // Revalidate and repaint the panel
+            b.revalidate();
+            b.repaint();
+        }
+
+        // Handle other actions if needed...
+    }
+
+
+    public static void main(String args[]) {
+        new ClientSearch();
+    }
+}

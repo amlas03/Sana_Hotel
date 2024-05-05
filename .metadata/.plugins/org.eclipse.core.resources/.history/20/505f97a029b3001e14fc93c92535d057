@@ -1,0 +1,46 @@
+package sana_hotel.swing;
+
+import java.awt.CardLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import sana_hotel.beans.Client;
+
+public class Login extends JFrame{
+	
+	  private CardLayout cardLayout;
+	    private JPanel cardPanel;
+
+	    public Login() {
+	        setTitle("Main Frame");
+	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        setResizable(true);
+	        setSize(500, 500);
+
+	        // Create CardLayout and JPanel
+	        cardLayout = new CardLayout();
+	        cardPanel = new JPanel(cardLayout);
+
+	        // Create LoginPage and PresentationPanel
+	        LoginPage2 loginPage = new LoginPage2(cardLayout, cardPanel);
+			ClientForms cf=new ClientForms(new Client());
+
+	        // Add components to cardPanel
+	        cardPanel.add(loginPage, "login");
+	        cardPanel.add(cf, "presentation");
+
+	        // Add cardPanel to the JFrame
+	        add(cardPanel);
+
+	        setLocationRelativeTo(null);
+	        setVisible(true);
+
+	        // Show the login page initially
+	        cardLayout.show(cardPanel, "login");
+}
+	    public static void main(String[] args) {
+	        SwingUtilities.invokeLater(Login::new);
+	    }
+}

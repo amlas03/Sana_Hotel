@@ -1,0 +1,5 @@
+package sana_hotel.database;
+
+public class Reservationdb {
+
+}
